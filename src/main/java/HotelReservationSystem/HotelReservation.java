@@ -36,7 +36,7 @@ public class HotelReservation
 		System.out.println(hotel);
 	}
 	
-	public Hotel findCheapestHotel(LocalDate startDate,LocalDate lastDate)
+	public Hotel findCheapestHotel(LocalDate startDate,LocalDate lastDate,String customerType)
 	{
 		Predicate<LocalDate> isWeekend = date -> date.getDayOfWeek() == DayOfWeek.SATURDAY
 	            || date.getDayOfWeek() == DayOfWeek.SUNDAY;
@@ -53,27 +53,54 @@ public class HotelReservation
 	    System.out.println("number of weekdays:"+ numberOfWeekDays);
 	    System.out.println("number of weekends:"+ numberOfWeekEnds);
 	    
-	    Hotel cheapestHotel = hotels.stream()
-				.min((h1,h2) -> h1.getPriceForDays(numberOfWeekDays,numberOfWeekEnds) - (h2.getPriceForDays(numberOfWeekDays,numberOfWeekEnds)))
-				.orElse(null);
-	
-		cheapestRate=(daysBetween+1)* cheapestHotel.getPriceForDays(numberOfWeekDays, numberOfWeekEnds);
-		System.out.println("Cheapest hotel name is :"+cheapestHotel.getHotelName()+ "Total rate is :"+ cheapestRate);
-		return cheapestHotel;
+	    if(customerType.equalsIgnoreCase("reward"))
+	    {
+	    	 Hotel cheapestHotel = hotels.stream()
+	 				.min((h1,h2) -> h1.getPriceForRewardCustomers(numberOfWeekDays,numberOfWeekEnds) - (h2.getPriceForRewardCustomers(numberOfWeekDays,numberOfWeekEnds)))
+	 				.orElse(null);
+	 	
+	 		cheapestRate=(daysBetween+1)* cheapestHotel.getPriceForRewardCustomers(numberOfWeekDays, numberOfWeekEnds);
+	 		System.out.println("Cheapest hotel name is :"+cheapestHotel.getHotelName()+ "Total rate is :"+ cheapestRate);
+	 		return cheapestHotel;
+	    }
+	    else
+	    {
+	    	Hotel cheapestHotel = hotels.stream()
+	 				.min((h1,h2) -> h1.getPriceForRegularCustomers(numberOfWeekDays,numberOfWeekEnds) - (h2.getPriceForRegularCustomers(numberOfWeekDays,numberOfWeekEnds)))
+	 				.orElse(null);
+	 	
+	 		cheapestRate=(daysBetween+1)* cheapestHotel.getPriceForRegularCustomers(numberOfWeekDays, numberOfWeekEnds);
+	 		System.out.println("Cheapest hotel name is :"+cheapestHotel.getHotelName()+ "Total rate is :"+ cheapestRate);
+	 		return cheapestHotel;
+	    }
+	   
 	}
 	
-	public Hotel findCheapestAndBestRatedHotel(LocalDate startDate,LocalDate lastDate)
+	public Hotel findCheapestAndBestRatedHotel(LocalDate startDate,LocalDate lastDate,String customerType)
 	{
-		Hotel cheapestHotel = findCheapestHotel(startDate,lastDate);
+		Hotel cheapestHotel = findCheapestHotel(startDate,lastDate,customerType);
+		if(customerType.equalsIgnoreCase("reward"))
+		{
+			Predicate<Hotel> isMinimumForRewardType = (hotel) -> (hotel.getPriceForRewardCustomers(numberOfWeekDays,numberOfWeekEnds) == cheapestRate)?true:false;
+			List<Hotel> cheapestHotels = hotels.stream()
+					 .filter(isMinimumForRewardType)
+					 .collect(Collectors.toList());
+			return cheapestHotels.stream()
+					.max((h1,h2) -> h1.getRating()-h2.getRating())
+					.orElse(null);
+		}
+		else
+		{
+			Predicate<Hotel> isMinimumForRegularType = (hotel) -> (hotel.getPriceForRegularCustomers(numberOfWeekDays,numberOfWeekEnds) == cheapestRate)?true:false;
+			List<Hotel> cheapestHotels = hotels.stream()
+					 .filter(isMinimumForRegularType)
+					 .collect(Collectors.toList());
+			return cheapestHotels.stream()
+					.max((h1,h2) -> h1.getRating()-h2.getRating())
+					.orElse(null);
+		}
+			
 		
-		Predicate<Hotel> isMinimum = (hotel) -> (hotel.getPriceForDays(numberOfWeekDays,numberOfWeekEnds) == cheapestRate)?true:false; 
-		List<Hotel> cheapestHotels = hotels.stream()
-									 .filter(isMinimum)
-									 .collect(Collectors.toList());
-		
-		return cheapestHotels.stream()
-			   .max((h1,h2) -> h1.getRating()-h2.getRating())
-			   .orElse(null);
 	}
 	
 	public Hotel findBestRatedHotel(LocalDate startDate,LocalDate lastDate)
@@ -82,7 +109,7 @@ public class HotelReservation
 				   .max((h1,h2) -> h1.getRating()-h2.getRating())
 				   .orElse(null);
 		System.out.println("The Best Rated Hotel is : "+bestRatedHotel.getHotelName());
-		System.out.println("Price is : "+bestRatedHotel.getPriceForDays(numberOfWeekDays,numberOfWeekEnds));
+		System.out.println("Price is : "+bestRatedHotel.getPriceForRegularCustomers(numberOfWeekDays,numberOfWeekEnds));
 		return bestRatedHotel;
 	}
 
