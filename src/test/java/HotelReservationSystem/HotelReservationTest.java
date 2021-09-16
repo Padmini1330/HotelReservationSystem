@@ -2,16 +2,19 @@ package HotelReservationSystem;
 
 import static org.junit.Assert.assertEquals;
 
+import java.time.LocalDate;
+import java.time.Month;
+
 import org.junit.Assert;
 import org.junit.Test;
 
 
 public class HotelReservationTest 
 {
+	HotelReservation hotelReservation = new HotelReservation();
 	@Test
 	public void givenDetails_WhenCorrect_ShoulReturnTrue()
 	{
-		HotelReservation hotelReservation = new HotelReservation();
 		boolean isValidHotel = hotelReservation.addHotel("Lakewood", 3000);
 		Assert.assertTrue(isValidHotel);
 	}
@@ -19,8 +22,9 @@ public class HotelReservationTest
 	@Test
 	public void givenDateRangeDetails_WhenCorrect_ShoulReturnTrue()
 	{
-		HotelReservation hotelReservation = new HotelReservation();
-		Hotel isValidHotel = hotelReservation.findCheapestHotel("12-1-21","14-1-21");
-		assertEquals(isValidHotel.getHotelName(),"Lakewood");
+		LocalDate startDate = LocalDate.of(2021, Month.SEPTEMBER, 10);
+	    LocalDate lastDate = LocalDate.of(2021, Month.SEPTEMBER, 11);
+		Hotel isValidHotel = hotelReservation.findCheapestHotel(startDate,lastDate);
+		assertEquals("Lakewood",isValidHotel.getHotelName());
 	}
 }
