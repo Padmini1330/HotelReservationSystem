@@ -20,6 +20,9 @@ import java.util.stream.Stream;
 public class HotelReservation 
 {
 	List<Hotel> hotels=new ArrayList<Hotel>();
+	long cheapestRate;
+	int numberOfWeekDays;
+	int numberOfWeekEnds;
 	
 	public List<Hotel> getHotelList() 
 	{
@@ -45,8 +48,8 @@ public class HotelReservation
 	            .filter((isWeekend))
 	            .collect(Collectors.toList());
 	    
-	    int numberOfWeekEnds=weekEnds.size();
-	    int numberOfWeekDays=(int) (daysBetween+1)  - numberOfWeekEnds;
+	    numberOfWeekEnds=weekEnds.size();
+	    numberOfWeekDays=(int) (daysBetween+1)  - numberOfWeekEnds;
 	    System.out.println("number of weekdays:"+ numberOfWeekDays);
 	    System.out.println("number of weekends:"+ numberOfWeekEnds);
 	    
@@ -54,11 +57,24 @@ public class HotelReservation
 				.min((h1,h2) -> h1.getPriceForDays(numberOfWeekDays,numberOfWeekEnds) - (h2.getPriceForDays(numberOfWeekDays,numberOfWeekEnds)))
 				.orElse(null);
 	
-		long cheapestRate=(daysBetween+1)* cheapestHotel.getPriceForDays(numberOfWeekDays, numberOfWeekEnds);
+		cheapestRate=(daysBetween+1)* cheapestHotel.getPriceForDays(numberOfWeekDays, numberOfWeekEnds);
 		System.out.println("Cheapest hotel name is :"+cheapestHotel.getHotelName()+ "Total rate is :"+ cheapestRate);
 		return cheapestHotel;
-	
-		
 	}
+	
+	public Hotel findCheapestAndBestRatedHotel(LocalDate startDate,LocalDate lastDate)
+	{
+		Hotel cheapestHotel = findCheapestHotel(startDate,lastDate);
+		
+		Predicate<Hotel> isMinimum = (hotel) -> (hotel.getPriceForDays(numberOfWeekDays,numberOfWeekEnds) == cheapestRate)?true:false; 
+		List<Hotel> cheapestHotels = hotels.stream()
+									 .filter(isMinimum)
+									 .collect(Collectors.toList());
+		
+		return cheapestHotels.stream()
+			   .max((h1,h2) -> h1.getRating()-h2.getRating())
+			   .orElse(null);
+	}
+	
 
 }
