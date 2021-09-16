@@ -76,9 +76,13 @@ public class Hotel
 				+ rewardWeekEndRate + "]";
 	}
 	
-	public int getPriceForDays(int numberOfWeekdays, int numberOfWeekends) 
+	public int getPriceForRegularCustomers(int numberOfWeekdays, int numberOfWeekends) 
 	{
 		return weekDayRate*numberOfWeekdays + weekEndRate*numberOfWeekends;
 	}
 	
+	public int getPriceForRewardCustomers(int numberOfWeekdays, int numberOfWeekends) 
+	{
+		return rewardWeekDayRate*numberOfWeekdays +rewardWeekEndRate*numberOfWeekends;
+	}
 }
