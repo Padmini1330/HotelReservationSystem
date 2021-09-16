@@ -30,7 +30,7 @@ public class HotelReservationTest
 		hotelReservation.addHotel("Ridgewood",220,150,5,100,40);;
 		LocalDate startDate = LocalDate.of(2021, Month.SEPTEMBER, 10);
 	    LocalDate lastDate = LocalDate.of(2021, Month.SEPTEMBER, 24);
-		Hotel cheapestHotel = hotelReservation.findCheapestHotel(startDate,lastDate);
+		Hotel cheapestHotel = hotelReservation.findCheapestHotel(startDate,lastDate,"regular");
 		assertEquals("Lakewood",cheapestHotel.getHotelName());
 	}
 	
@@ -40,7 +40,7 @@ public class HotelReservationTest
 		hotelReservation.addHotel("Ridgewood",220,150,5,100,40);
 		LocalDate startDate = LocalDate.of(2021, Month.JANUARY, 9);
 	    LocalDate lastDate = LocalDate.of(2021, Month.JANUARY, 14);
-		Hotel cheapestHotel = hotelReservation.findCheapestHotel(startDate,lastDate);
+		Hotel cheapestHotel = hotelReservation.findCheapestHotel(startDate,lastDate,"regular");
 		assertEquals("Ridgewood",cheapestHotel.getHotelName());
 	}
 	
@@ -52,7 +52,7 @@ public class HotelReservationTest
 		hotelReservation.addHotel("Ridgewood",220,150,5,100,40);
 		LocalDate startDate = LocalDate.of(2021, Month.JANUARY, 9);
 	    LocalDate lastDate = LocalDate.of(2021, Month.JANUARY, 14);
-		Hotel cheapestHotel = hotelReservation.findCheapestHotel(startDate,lastDate);
+		Hotel cheapestHotel = hotelReservation.findCheapestHotel(startDate,lastDate,"regular");
 		assertEquals("Lakewood",cheapestHotel.getHotelName());
 	}
 	
@@ -63,7 +63,7 @@ public class HotelReservationTest
 		hotelReservation.getHotelList().get(0).setRating(4);
 		LocalDate startDate = LocalDate.of(2021, Month.JANUARY, 9);
 	    LocalDate lastDate = LocalDate.of(2021, Month.JANUARY, 14);
-		Hotel cheapestHotel = hotelReservation.findCheapestHotel(startDate,lastDate);
+		Hotel cheapestHotel = hotelReservation.findCheapestHotel(startDate,lastDate,"regular");
 		assertEquals(4,hotelReservation.getHotelList().get(0).getRating());
 	}
 	
@@ -75,7 +75,7 @@ public class HotelReservationTest
 		hotelReservation.addHotel("Ridgewood",220,150,5,100,40);
 		LocalDate startDate = LocalDate.of(2021, Month.JANUARY, 9);
 	    LocalDate lastDate = LocalDate.of(2021, Month.JANUARY, 14);
-		Hotel cheapestHotel = hotelReservation.findCheapestAndBestRatedHotel(startDate, lastDate);
+		Hotel cheapestHotel = hotelReservation.findCheapestAndBestRatedHotel(startDate, lastDate,"regular");
 	}
 	
 	@Test
@@ -88,5 +88,16 @@ public class HotelReservationTest
 	    LocalDate lastDate = LocalDate.of(2021, Month.JANUARY, 14);
 		Hotel cheapestHotel = hotelReservation.findBestRatedHotel(startDate, lastDate);
 		assertEquals("Ridgewood",cheapestHotel.getHotelName());
+	}
+	
+	@Test
+	public void givenHotelDetails_whenCustomerTypeIsReward_ShouldReturnCheapestHotelWithBestRating()
+	{
+		hotelReservation.addHotel("Lakewood",110,90,3,80,80);
+		hotelReservation.addHotel("Bridgewood",150,50,4,110,50);
+		hotelReservation.addHotel("Ridgewood",220,150,5,100,40);
+		LocalDate startDate = LocalDate.of(2021, Month.JANUARY, 9);
+	    LocalDate lastDate = LocalDate.of(2021, Month.JANUARY, 14);
+		Hotel cheapestHotel = hotelReservation.findCheapestAndBestRatedHotel(startDate, lastDate,"reward");
 	}
 }
