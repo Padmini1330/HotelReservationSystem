@@ -53,7 +53,6 @@ public class HotelReservation
 	    Hotel cheapestHotel = hotels.stream()
 				.min((h1,h2) -> h1.getPriceForDays(numberOfWeekDays,numberOfWeekEnds) - (h2.getPriceForDays(numberOfWeekDays,numberOfWeekEnds)))
 				.orElse(null);
-	    
 	
 		long cheapestRate=(daysBetween+1)* cheapestHotel.getPriceForDays(numberOfWeekDays, numberOfWeekEnds);
 		System.out.println("Cheapest hotel name is :"+cheapestHotel.getHotelName()+ "Total rate is :"+ cheapestRate);

@@ -11,6 +11,7 @@ import org.junit.Test;
 public class HotelReservationTest 
 {
 	HotelReservation hotelReservation = new HotelReservation();
+	
 	@Test
 	public void givenDetails_WhenAdded_ListSizeShouldGetIncreased()
 	{
