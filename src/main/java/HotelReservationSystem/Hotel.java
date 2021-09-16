@@ -3,32 +3,55 @@ package HotelReservationSystem;
 public class Hotel 
 {
 	String hotelName;
-	int rateForRegularCustomer;
-	public Hotel(String hotelName, int rateForRegularCustomer) 
+	int weekDayRate;
+	int weekEndRate;
+	int rating;
+	public Hotel(String hotelName, int weekDayRate, int weekEndRate, int rating) 
 	{
 		super();
 		this.hotelName = hotelName;
-		this.rateForRegularCustomer = rateForRegularCustomer;
+		this.weekDayRate = weekDayRate;
+		this.weekEndRate = weekEndRate;
+		this.rating = rating;
 	}
 	public String getHotelName() 
 	{
 		return hotelName;
 	}
-	public int getRateForRegularCustomer() 
+	public int getWeekDayRate() 
 	{
-		return rateForRegularCustomer;
+		return weekDayRate;
+	}
+	public int getWeekEndRate() 
+	{
+		return weekEndRate;
+	}
+	public int getRating() 
+	{
+		return rating;
 	}
 	public void setHotelName(String hotelName) 
 	{
 		this.hotelName = hotelName;
 	}
-	public void setRateForRegularCustomer(int rateForRegularCustomer) 
+	public void setWeekDayRate(int weekDayRate) 
 	{
-		this.rateForRegularCustomer = rateForRegularCustomer;
+		this.weekDayRate = weekDayRate;
+	}
+	public void setWeekEndRate(int weekEndRate) 
+	{
+		this.weekEndRate = weekEndRate;
+	}
+	public void setRating(int rating) 
+	{
+		this.rating = rating;
 	}
 	@Override
-	public String toString() {
-		return "Hotel [hotelName=" + hotelName + ", rateForRegularCustomer=" + rateForRegularCustomer + "]";
+	public String toString() 
+	{
+		return "Hotel [hotelName=" + hotelName + ", weekDayRate=" + weekDayRate + ", weekEndRate=" + weekEndRate
+				+ ", rating=" + rating + "]";
 	}
+	
 	
 }
