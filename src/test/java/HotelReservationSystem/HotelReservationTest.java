@@ -68,14 +68,27 @@ public class HotelReservationTest
 	}
 	
 	@Test
-	public void givenHotelDetails_whenProper_ShouldReturnCheapestHotelWithBestRating()
+	public void givenHotelDetails_whenCustomerTypeIsRegular_ShouldReturnCheapestHotelWithBestRating()
 	{
 		hotelReservation.addHotel("Lakewood",110,90,3,80,80);
 		hotelReservation.addHotel("Bridgewood",150,50,4,110,50);
 		hotelReservation.addHotel("Ridgewood",220,150,5,100,40);
 		LocalDate startDate = LocalDate.of(2021, Month.JANUARY, 9);
 	    LocalDate lastDate = LocalDate.of(2021, Month.JANUARY, 14);
-		Hotel cheapestHotel = hotelReservation.findCheapestAndBestRatedHotel(startDate, lastDate,"regular");
+	    String startDateInString=startDate.toString();
+	    String lastDateInString=lastDate.toString();
+	    boolean isValidStartDate = hotelReservation.validateDate(startDateInString);
+		boolean isValidEndDate = hotelReservation.validateDate(lastDateInString);
+	    if(isValidStartDate && isValidEndDate)
+	    {
+	    	Hotel cheapestHotel = hotelReservation.findCheapestAndBestRatedHotel(startDate, lastDate,"regular");
+		}
+	    else
+	    {
+	    	System.out.println("Enter proper start and end dates!");
+	    }
+		
+		
 	}
 	
 	@Test
@@ -98,14 +111,19 @@ public class HotelReservationTest
 		hotelReservation.addHotel("Ridgewood",220,150,5,100,40);
 		LocalDate startDate = LocalDate.of(2021, Month.JANUARY, 9);
 	    LocalDate lastDate = LocalDate.of(2021, Month.JANUARY, 14);
-	    try 
+	    String startDateInString=startDate.toString();
+	    String lastDateInString=lastDate.toString();
+	    boolean isValidStartDate = hotelReservation.validateDate(startDateInString);
+		boolean isValidEndDate = hotelReservation.validateDate(lastDateInString);
+	    if(isValidStartDate && isValidEndDate)
 	    {
 	    	Hotel cheapestHotel = hotelReservation.findCheapestAndBestRatedHotel(startDate, lastDate,"reward");
 		}
-		catch(HotelReservationException e) 
+	    else
 	    {
-			System.out.println(e.getMessage());
-		}
+	    	System.out.println("Enter proper start and end dates!");
+	    }
+		
 		
 	}
 	
@@ -144,6 +162,7 @@ public class HotelReservationTest
 			System.out.println(e.getMessage());
 		}
 	}
+	
 	@Test
 	public void givenHotelDetails_whenStringIsEmpty_ShouldReturnExceptionMessgae()
 	{
@@ -160,5 +179,37 @@ public class HotelReservationTest
 	    {
 			System.out.println(e.getMessage());
 		}
+	}
+	
+	@Test
+	public void givenDate_WhenProper_ShouldReturnTrue() 
+	{
+		
+		boolean isValid = hotelReservation.validateDate("2021/10/11");
+		Assert.assertTrue(isValid);
+	}
+	
+	@Test
+	public void givenDate_WhenNotProperWithFormat_ShouldReturnFalse() 
+	{
+		
+		boolean isNotValid = hotelReservation.validateDate("20/1/2");
+		Assert.assertFalse(isNotValid);
+	}
+	
+	@Test
+	public void givenDate_WhenOtherDelimiterUsed_ShouldReturnFalse() 
+	{
+		
+		boolean isNotValid = hotelReservation.validateDate("2020-02'11");
+		Assert.assertFalse(isNotValid);
+	}
+	
+	@Test
+	public void givenDate_WhenContainsAlphabets_ShouldReturnFalse() 
+	{
+		
+		boolean isNotValid = hotelReservation.validateDate("2020/12/ab");
+		Assert.assertFalse(isNotValid);
 	}
 }
