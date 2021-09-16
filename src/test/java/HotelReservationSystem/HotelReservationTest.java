@@ -8,23 +8,39 @@ import java.time.Month;
 import org.junit.Assert;
 import org.junit.Test;
 
-
 public class HotelReservationTest 
 {
 	HotelReservation hotelReservation = new HotelReservation();
 	@Test
-	public void givenDetails_WhenCorrect_ShoulReturnTrue()
+	public void givenDetails_WhenAdded_ListSizeShouldGetIncreased()
 	{
-		boolean isValidHotel = hotelReservation.addHotel("Lakewood", 3000);
-		Assert.assertTrue(isValidHotel);
+		int hotelListSize = hotelReservation.getHotelList().size();
+		
+		hotelReservation.addHotel("Lakewood", 110,90,3);
+		assertEquals(hotelListSize + 1, hotelReservation.getHotelList().size());
+		
 	}
 	
 	@Test
-	public void givenDateRangeDetails_WhenCorrect_ShoulReturnTrue()
+	public void givenDateRangeDetails_WhenCorrect_ShoulReturnProperHotelName()
 	{
+		hotelReservation.addHotel("Lakewood",110,90,3);
+		hotelReservation.addHotel("Bridgewood",150,50,4);
+		hotelReservation.addHotel("Ridgewood",220,150,5);
 		LocalDate startDate = LocalDate.of(2021, Month.SEPTEMBER, 10);
 	    LocalDate lastDate = LocalDate.of(2021, Month.SEPTEMBER, 11);
-		Hotel isValidHotel = hotelReservation.findCheapestHotel(startDate,lastDate);
-		assertEquals("Lakewood",isValidHotel.getHotelName());
+		Hotel cheapestHotel = hotelReservation.findCheapestHotel(startDate,lastDate);
+		assertEquals("Lakewood",cheapestHotel.getHotelName());
+	}
+	
+	@Test
+	public void givenOneHotel_WhenCorrect_ShoulReturnProperHotelName()
+	{
+		hotelReservation.addHotel("Ridgewood",220,150,5);
+		LocalDate startDate = LocalDate.of(2021, Month.JANUARY, 9);
+	    LocalDate lastDate = LocalDate.of(2021, Month.JANUARY, 14);
+		Hotel cheapestHotel = hotelReservation.findCheapestHotel(startDate,lastDate);
+		assertEquals("Ridgewood",cheapestHotel.getHotelName());
+		
 	}
 }
