@@ -16,12 +16,17 @@ import java.util.Scanner;
 public class HotelReservation 
 {
 	List<Hotel> hotels=new ArrayList<Hotel>();
-	public boolean addHotel(String hotelName,int rate)
+	
+	public List<Hotel> getHotelList() 
 	{
-		Scanner scanner=new Scanner(System.in);
-		Hotel hotel=new Hotel("Lakewood",2000);
+		return hotels;
+	}
+	
+	public void addHotel(String hotelName,int weekDayRate, int weekEndRate, int rating)
+	{
+		Hotel hotel=new Hotel(hotelName,weekDayRate,weekEndRate,rating);
 		hotels.add(hotel);
-		return true;
+		System.out.println(hotel);
 	}
 	
 	public Hotel findCheapestHotel(LocalDate startDate,LocalDate lastDate)
@@ -29,11 +34,12 @@ public class HotelReservation
 		long daysBetween = ChronoUnit.DAYS.between(startDate, lastDate);
 		
 		Hotel cheapestHotel=hotels.stream()
-				.min((n1,n2)->n1.getRateForRegularCustomer()-n2.getRateForRegularCustomer())
+				.min((n1,n2)->n1.getWeekDayRate()-n2.getWeekDayRate())
 				.orElse(null);
-		long cheapestRate=(daysBetween+1)* cheapestHotel.getRateForRegularCustomer();
+		long cheapestRate=(daysBetween+1)* cheapestHotel.getWeekDayRate();
 		System.out.println("Cheapest hotel name is :"+cheapestHotel.getHotelName()+ "Total rate is :"+ cheapestRate);
 		return cheapestHotel;
 		
 	}
+
 }
