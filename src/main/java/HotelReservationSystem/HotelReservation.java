@@ -76,5 +76,14 @@ public class HotelReservation
 			   .orElse(null);
 	}
 	
+	public Hotel findBestRatedHotel(LocalDate startDate,LocalDate lastDate)
+	{		
+		Hotel bestRatedHotel = hotels.stream()
+				   .max((h1,h2) -> h1.getRating()-h2.getRating())
+				   .orElse(null);
+		System.out.println("The Best Rated Hotel is : "+bestRatedHotel.getHotelName());
+		System.out.println("Price is : "+bestRatedHotel.getPriceForDays(numberOfWeekDays,numberOfWeekEnds));
+		return bestRatedHotel;
+	}
 
 }
