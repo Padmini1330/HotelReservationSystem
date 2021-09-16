@@ -31,6 +31,27 @@ public class HotelReservation
 		return hotels;
 	}
 	
+
+	public boolean validateDate(String date) 
+	{
+		
+		try 
+		{
+			if(date.length() == 0)
+				throw new HotelReservationException(ExceptionType.ENTERED_EMPTY, "Date Is EMPTY");
+			
+			String dateRegEx = "^[0-9]{4}/(0[0-9]||1[0-2])/([0-2][0-9]||3[0-1])$";
+			
+			return date.matches(dateRegEx);
+		}
+		catch(NullPointerException e) 
+		{
+			throw new HotelReservationException(ExceptionType.ENTERED_NULL, "Date is Null. Null values not allowed!");
+		}
+		
+		
+	}
+
 	public void addHotel(String hotelName,int weekDayRate, int weekEndRate, int rating, int rewardWeekDayRate, int rewardWeekEndRate)
 	{
 		Hotel hotel=new Hotel(hotelName, weekDayRate, weekEndRate, rating, rewardWeekDayRate, rewardWeekEndRate);
@@ -101,7 +122,8 @@ public class HotelReservation
 			Hotel cheapestHotel = findCheapestHotel(startDate,lastDate,customerType);
 			if(customerType.equalsIgnoreCase("reward"))
 			{
-				Predicate<Hotel> isMinimumForRewardType = (hotel) -> (hotel.getPriceForRewardCustomers(numberOfWeekDays,numberOfWeekEnds) == cheapestRate)?true:false;
+				Predicate<Hotel> isMinimumForRewardType = (hotel) -> 
+				(hotel.getPriceForRewardCustomers(numberOfWeekDays,numberOfWeekEnds) == cheapestRate)? true: false;
 				List<Hotel> cheapestHotels = hotels.stream()
 						 .filter(isMinimumForRewardType)
 						 .collect(Collectors.toList());
@@ -111,7 +133,8 @@ public class HotelReservation
 			}
 			else
 			{
-				Predicate<Hotel> isMinimumForRegularType = (hotel) -> (hotel.getPriceForRegularCustomers(numberOfWeekDays,numberOfWeekEnds) == cheapestRate)?true:false;
+				Predicate<Hotel> isMinimumForRegularType = (hotel) -> 
+				(hotel.getPriceForRegularCustomers(numberOfWeekDays,numberOfWeekEnds) == cheapestRate)? true: false;
 				List<Hotel> cheapestHotels = hotels.stream()
 						 .filter(isMinimumForRegularType)
 						 .collect(Collectors.toList());
