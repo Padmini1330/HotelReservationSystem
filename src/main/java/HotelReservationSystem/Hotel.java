@@ -46,6 +46,10 @@ public class Hotel
 	{
 		this.rating = rating;
 	}
+	public int getPriceForDays(int numberOfWeekdays, int numberOfWeekends) 
+	{
+		return weekDayRate*numberOfWeekdays + weekEndRate*numberOfWeekends;
+	}
 	@Override
 	public String toString() 
 	{
