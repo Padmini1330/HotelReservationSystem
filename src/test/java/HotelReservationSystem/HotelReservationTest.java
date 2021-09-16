@@ -55,4 +55,15 @@ public class HotelReservationTest
 		Hotel cheapestHotel = hotelReservation.findCheapestHotel(startDate,lastDate);
 		assertEquals("Lakewood",cheapestHotel.getHotelName());
 	}
+	
+	@Test
+	public void givenRating_WhenAddedToHotel_ShoulReturnProperHotelRating()
+	{
+		hotelReservation.addHotel("Lakewood",110,90,3);
+		hotelReservation.getHotelList().get(0).setRating(4);
+		LocalDate startDate = LocalDate.of(2021, Month.JANUARY, 9);
+	    LocalDate lastDate = LocalDate.of(2021, Month.JANUARY, 14);
+		Hotel cheapestHotel = hotelReservation.findCheapestHotel(startDate,lastDate);
+		assertEquals(4,hotelReservation.getHotelList().get(0).getRating());
+	}
 }
