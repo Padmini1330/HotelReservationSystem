@@ -19,25 +19,20 @@ public class HotelReservation
 	public boolean addHotel(String hotelName,int rate)
 	{
 		Scanner scanner=new Scanner(System.in);
-		Hotel hotel=new Hotel("A",2000);
+		Hotel hotel=new Hotel("Lakewood",2000);
 		hotels.add(hotel);
 		return true;
 	}
 	
-	public Hotel findCheapestHotel(String startRange,String endRange)
+	public Hotel findCheapestHotel(LocalDate startDate,LocalDate lastDate)
 	{
-
-		DateFormat date=new SimpleDateFormat("dd-mm-yy",Locale.ENGLISH);
-		LocalDate startDate=LocalDate.parse(startRange);
-		LocalDate endDate=LocalDate.parse(endRange);
+		long daysBetween = ChronoUnit.DAYS.between(startDate, lastDate);
 		
 		Hotel cheapestHotel=hotels.stream()
 				.min((n1,n2)->n1.getRateForRegularCustomer()-n2.getRateForRegularCustomer())
 				.orElse(null);
-		
-		long noOfDaysBetween = ChronoUnit.DAYS.between(startDate, endDate);
-		long cheapestRate=noOfDaysBetween* cheapestHotel.getRateForRegularCustomer();
-		System.out.println(cheapestRate);
+		long cheapestRate=(daysBetween+1)* cheapestHotel.getRateForRegularCustomer();
+		System.out.println("Cheapest hotel name is :"+cheapestHotel.getHotelName()+ "Total rate is :"+ cheapestRate);
 		return cheapestHotel;
 		
 	}
