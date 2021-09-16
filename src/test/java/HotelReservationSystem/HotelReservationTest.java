@@ -98,6 +98,67 @@ public class HotelReservationTest
 		hotelReservation.addHotel("Ridgewood",220,150,5,100,40);
 		LocalDate startDate = LocalDate.of(2021, Month.JANUARY, 9);
 	    LocalDate lastDate = LocalDate.of(2021, Month.JANUARY, 14);
-		Hotel cheapestHotel = hotelReservation.findCheapestAndBestRatedHotel(startDate, lastDate,"reward");
+	    try 
+	    {
+	    	Hotel cheapestHotel = hotelReservation.findCheapestAndBestRatedHotel(startDate, lastDate,"reward");
+		}
+		catch(HotelReservationException e) 
+	    {
+			System.out.println(e.getMessage());
+		}
+		
+	}
+	
+	@Test
+	public void givenHotelDetails_whenStartDateIsNull_ShouldReturnExceptionMessgae()
+	{
+		hotelReservation.addHotel("Lakewood",110,90,3,80,80);
+		hotelReservation.addHotel("Bridgewood",150,50,4,110,50);
+		hotelReservation.addHotel("Ridgewood",220,150,5,100,40);
+		LocalDate startDate = LocalDate.of(2021, Month.JANUARY, 9);
+	    LocalDate lastDate = LocalDate.of(2021, Month.JANUARY, 14);
+	    try 
+	    {
+	    	Hotel cheapestHotel = hotelReservation.findCheapestAndBestRatedHotel(null, lastDate,"reward");
+		}
+		catch(HotelReservationException e) 
+	    {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	@Test
+	public void givenHotelDetails_whenLastDateIsNull_ShouldReturnExceptionMessgae()
+	{
+		hotelReservation.addHotel("Lakewood",110,90,3,80,80);
+		hotelReservation.addHotel("Bridgewood",150,50,4,110,50);
+		hotelReservation.addHotel("Ridgewood",220,150,5,100,40);
+		LocalDate startDate = LocalDate.of(2021, Month.JANUARY, 9);
+	    LocalDate lastDate = LocalDate.of(2021, Month.JANUARY, 14);
+	    try 
+	    {
+	    	Hotel cheapestHotel = hotelReservation.findCheapestAndBestRatedHotel(startDate, null ,"reward");
+		}
+		catch(HotelReservationException e) 
+	    {
+			System.out.println(e.getMessage());
+		}
+	}
+	@Test
+	public void givenHotelDetails_whenStringIsEmpty_ShouldReturnExceptionMessgae()
+	{
+		hotelReservation.addHotel("Lakewood",110,90,3,80,80);
+		hotelReservation.addHotel("Bridgewood",150,50,4,110,50);
+		hotelReservation.addHotel("Ridgewood",220,150,5,100,40);
+		LocalDate startDate = LocalDate.of(2021, Month.JANUARY, 9);
+	    LocalDate lastDate = LocalDate.of(2021, Month.JANUARY, 14);
+	    try 
+	    {
+	    	Hotel cheapestHotel = hotelReservation.findCheapestAndBestRatedHotel(startDate, lastDate,"");
+		}
+		catch(HotelReservationException e) 
+	    {
+			System.out.println(e.getMessage());
+		}
 	}
 }
