@@ -29,9 +29,9 @@ public class HotelReservation
 		return hotels;
 	}
 	
-	public void addHotel(String hotelName,int weekDayRate, int weekEndRate, int rating)
+	public void addHotel(String hotelName,int weekDayRate, int weekEndRate, int rating, int rewardWeekDayRate, int rewardWeekEndRate)
 	{
-		Hotel hotel=new Hotel(hotelName,weekDayRate,weekEndRate,rating);
+		Hotel hotel=new Hotel(hotelName, weekDayRate, weekEndRate, rating, rewardWeekDayRate, rewardWeekEndRate);
 		hotels.add(hotel);
 		System.out.println(hotel);
 	}
