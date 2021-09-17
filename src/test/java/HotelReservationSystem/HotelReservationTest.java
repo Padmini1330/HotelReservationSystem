@@ -1,27 +1,25 @@
 package HotelReservationSystem;
 
 import static org.junit.Assert.assertEquals;
-
 import java.time.LocalDate;
 import java.time.Month;
-
 import org.junit.Assert;
 import org.junit.Test;
 
 public class HotelReservationTest 
 {
-	HotelReservation hotelReservation = new HotelReservation();
+	HotelReservationImpl hotelReservation = new HotelReservationImpl();
+	DateServiceProvider dateServiceProvider=new DateServiceProvider();
 	
+
 	@Test
 	public void givenDetails_WhenAdded_ListSizeShouldGetIncreased()
 	{
-		int hotelListSize = hotelReservation.getHotelList().size();
-		
+		int hotelListSize = hotelReservation.hotels.size();
 		hotelReservation.addHotel("Lakewood",110,90,3,80,80);
-		assertEquals(hotelListSize + 1, hotelReservation.getHotelList().size());
+		assertEquals(hotelListSize + 1, hotelReservation.hotels.size());
 		
 	}
-	
 	@Test
 	public void givenDateRangeDetails_WhenCorrect_ShouldReturnProperHotelName()
 	{
@@ -30,7 +28,7 @@ public class HotelReservationTest
 		hotelReservation.addHotel("Ridgewood",220,150,5,100,40);;
 		LocalDate startDate = LocalDate.of(2021, Month.SEPTEMBER, 10);
 	    LocalDate lastDate = LocalDate.of(2021, Month.SEPTEMBER, 24);
-		Hotel cheapestHotel = hotelReservation.findCheapestHotel(startDate,lastDate,"regular");
+		Hotel cheapestHotel = hotelReservation.findCheapestHotel(startDate,lastDate,CustomerType.REGULAR);
 		assertEquals("Lakewood",cheapestHotel.getHotelName());
 	}
 	
@@ -40,7 +38,7 @@ public class HotelReservationTest
 		hotelReservation.addHotel("Ridgewood",220,150,5,100,40);
 		LocalDate startDate = LocalDate.of(2021, Month.JANUARY, 9);
 	    LocalDate lastDate = LocalDate.of(2021, Month.JANUARY, 14);
-		Hotel cheapestHotel = hotelReservation.findCheapestHotel(startDate,lastDate,"regular");
+		Hotel cheapestHotel = hotelReservation.findCheapestHotel(startDate,lastDate,CustomerType.REGULAR);
 		assertEquals("Ridgewood",cheapestHotel.getHotelName());
 	}
 	
@@ -52,7 +50,7 @@ public class HotelReservationTest
 		hotelReservation.addHotel("Ridgewood",220,150,5,100,40);
 		LocalDate startDate = LocalDate.of(2021, Month.JANUARY, 9);
 	    LocalDate lastDate = LocalDate.of(2021, Month.JANUARY, 14);
-		Hotel cheapestHotel = hotelReservation.findCheapestHotel(startDate,lastDate,"regular");
+		Hotel cheapestHotel = hotelReservation.findCheapestHotel(startDate,lastDate,CustomerType.REGULAR);
 		assertEquals("Lakewood",cheapestHotel.getHotelName());
 	}
 	
@@ -60,11 +58,11 @@ public class HotelReservationTest
 	public void givenRating_WhenAddedToHotel_ShouldReturnProperHotelRating()
 	{
 		hotelReservation.addHotel("Lakewood",110,90,3,80,80);
-		hotelReservation.getHotelList().get(0).setRating(4);
+		hotelReservation.hotels.get(0).setRating(4);
 		LocalDate startDate = LocalDate.of(2021, Month.JANUARY, 9);
 	    LocalDate lastDate = LocalDate.of(2021, Month.JANUARY, 14);
-		Hotel cheapestHotel = hotelReservation.findCheapestHotel(startDate,lastDate,"regular");
-		assertEquals(4,hotelReservation.getHotelList().get(0).getRating());
+		Hotel cheapestHotel = hotelReservation.findCheapestHotel(startDate,lastDate,CustomerType.REGULAR);
+		assertEquals(4,hotelReservation.hotels.get(0).getRating());
 	}
 	
 	@Test
@@ -77,11 +75,11 @@ public class HotelReservationTest
 	    LocalDate lastDate = LocalDate.of(2021, Month.JANUARY, 14);
 	    String startDateInString=startDate.toString();
 	    String lastDateInString=lastDate.toString();
-	    boolean isValidStartDate = hotelReservation.validateDate(startDateInString);
-		boolean isValidEndDate = hotelReservation.validateDate(lastDateInString);
+	    boolean isValidStartDate = dateServiceProvider.validateDate(startDateInString);
+		boolean isValidEndDate = dateServiceProvider.validateDate(lastDateInString);
 	    if(isValidStartDate && isValidEndDate)
 	    {
-	    	Hotel cheapestHotel = hotelReservation.findCheapestAndBestRatedHotel(startDate, lastDate,"regular");
+	    	Hotel cheapestHotel = hotelReservation.findCheapestAndBestRatedHotel(startDate, lastDate,CustomerType.REGULAR);
 		}
 	    else
 	    {
@@ -113,11 +111,11 @@ public class HotelReservationTest
 	    LocalDate lastDate = LocalDate.of(2021, Month.JANUARY, 14);
 	    String startDateInString=startDate.toString();
 	    String lastDateInString=lastDate.toString();
-	    boolean isValidStartDate = hotelReservation.validateDate(startDateInString);
-		boolean isValidEndDate = hotelReservation.validateDate(lastDateInString);
+	    boolean isValidStartDate = dateServiceProvider.validateDate(startDateInString);
+		boolean isValidEndDate = dateServiceProvider.validateDate(lastDateInString);
 	    if(isValidStartDate && isValidEndDate)
 	    {
-	    	Hotel cheapestHotel = hotelReservation.findCheapestAndBestRatedHotel(startDate, lastDate,"reward");
+	    	Hotel cheapestHotel = hotelReservation.findCheapestAndBestRatedHotel(startDate, lastDate,CustomerType.REWARDED);
 		}
 	    else
 	    {
@@ -137,7 +135,7 @@ public class HotelReservationTest
 	    LocalDate lastDate = LocalDate.of(2021, Month.JANUARY, 14);
 	    try 
 	    {
-	    	Hotel cheapestHotel = hotelReservation.findCheapestAndBestRatedHotel(null, lastDate,"reward");
+	    	Hotel cheapestHotel = hotelReservation.findCheapestAndBestRatedHotel(null, lastDate,CustomerType.REWARDED);
 		}
 		catch(HotelReservationException e) 
 	    {
@@ -155,7 +153,7 @@ public class HotelReservationTest
 	    LocalDate lastDate = LocalDate.of(2021, Month.JANUARY, 14);
 	    try 
 	    {
-	    	Hotel cheapestHotel = hotelReservation.findCheapestAndBestRatedHotel(startDate, null ,"reward");
+	    	Hotel cheapestHotel = hotelReservation.findCheapestAndBestRatedHotel(startDate, null ,CustomerType.REWARDED);
 		}
 		catch(HotelReservationException e) 
 	    {
@@ -164,7 +162,7 @@ public class HotelReservationTest
 	}
 	
 	@Test
-	public void givenHotelDetails_whenStringIsEmpty_ShouldReturnExceptionMessgae()
+	public void givenHotelDetails_whenCustomerTypeIsNull_ShouldReturnExceptionMessgae()
 	{
 		hotelReservation.addHotel("Lakewood",110,90,3,80,80);
 		hotelReservation.addHotel("Bridgewood",150,50,4,110,50);
@@ -173,7 +171,7 @@ public class HotelReservationTest
 	    LocalDate lastDate = LocalDate.of(2021, Month.JANUARY, 14);
 	    try 
 	    {
-	    	Hotel cheapestHotel = hotelReservation.findCheapestAndBestRatedHotel(startDate, lastDate,"");
+	    	Hotel cheapestHotel = hotelReservation.findCheapestAndBestRatedHotel(startDate, lastDate,null);
 		}
 		catch(HotelReservationException e) 
 	    {
@@ -185,7 +183,7 @@ public class HotelReservationTest
 	public void givenDate_WhenProper_ShouldReturnTrue() 
 	{
 		
-		boolean isValid = hotelReservation.validateDate("2021/10/11");
+		boolean isValid = dateServiceProvider.validateDate("2021/10/11");
 		Assert.assertTrue(isValid);
 	}
 	
@@ -193,7 +191,7 @@ public class HotelReservationTest
 	public void givenDate_WhenNotProperWithFormat_ShouldReturnFalse() 
 	{
 		
-		boolean isNotValid = hotelReservation.validateDate("20/1/2");
+		boolean isNotValid = dateServiceProvider.validateDate("20/1/2");
 		Assert.assertFalse(isNotValid);
 	}
 	
@@ -201,7 +199,7 @@ public class HotelReservationTest
 	public void givenDate_WhenOtherDelimiterUsed_ShouldReturnFalse() 
 	{
 		
-		boolean isNotValid = hotelReservation.validateDate("2020-02'11");
+		boolean isNotValid = dateServiceProvider.validateDate("2020-02'11");
 		Assert.assertFalse(isNotValid);
 	}
 	
@@ -209,7 +207,7 @@ public class HotelReservationTest
 	public void givenDate_WhenContainsAlphabets_ShouldReturnFalse() 
 	{
 		
-		boolean isNotValid = hotelReservation.validateDate("2020/12/ab");
+		boolean isNotValid = dateServiceProvider.validateDate("2020/12/ab");
 		Assert.assertFalse(isNotValid);
 	}
 }
