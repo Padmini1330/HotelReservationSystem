@@ -2,12 +2,12 @@ package HotelReservationSystem;
 
 public class Hotel 
 {
-	String hotelName;
-	int weekDayRate;
-	int weekEndRate;
-	int rating;
-	int rewardWeekDayRate;
-	int rewardWeekEndRate;
+	public String hotelName;
+	public int weekDayRate;
+	public int weekEndRate;
+	public int rating;
+	public int rewardWeekDayRate;
+	public int rewardWeekEndRate;
 	
 	public Hotel(String hotelName, int weekDayRate, int weekEndRate, int rating, int rewardWeekDayRate,
 			int rewardWeekEndRate) 
@@ -48,32 +48,9 @@ public class Hotel
 	{
 		this.hotelName = hotelName;
 	}
-	public void setWeekDayRate(int weekDayRate) 
-	{
-		this.weekDayRate = weekDayRate;
-	}
-	public void setWeekEndRate(int weekEndRate) 
-	{
-		this.weekEndRate = weekEndRate;
-	}
 	public void setRating(int rating) 
 	{
 		this.rating = rating;
-	}
-	public void setRewardWeekDayRate(int rewardWeekDayRate) 
-	{
-		this.rewardWeekDayRate = rewardWeekDayRate;
-	}
-	public void setRewardWeekEndRate(int rewardWeekEndRate) 
-	{
-		this.rewardWeekEndRate = rewardWeekEndRate;
-	}
-	@Override
-	public String toString() 
-	{
-		return "Hotel [hotelName=" + hotelName + ", weekDayRate=" + weekDayRate + ", weekEndRate=" + weekEndRate
-				+ ", rating=" + rating + ", rewardWeekDayRate=" + rewardWeekDayRate + ", rewardWeekEndRate="
-				+ rewardWeekEndRate + "]";
 	}
 	
 	public int getPriceForRegularCustomers(int numberOfWeekdays, int numberOfWeekends) 
@@ -84,5 +61,12 @@ public class Hotel
 	public int getPriceForRewardCustomers(int numberOfWeekdays, int numberOfWeekends) 
 	{
 		return rewardWeekDayRate*numberOfWeekdays +rewardWeekEndRate*numberOfWeekends;
+	}
+	@Override
+	public String toString() 
+	{
+		return "Hotel [hotelName=" + hotelName + ", weekDayRate=" + weekDayRate + ", weekEndRate=" + weekEndRate
+				+ ", rating=" + rating + ", rewardWeekDayRate=" + rewardWeekDayRate + ", rewardWeekEndRate="
+				+ rewardWeekEndRate + "]";
 	}
 }
